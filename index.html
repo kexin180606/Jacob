@@ -29,7 +29,7 @@
             if (!input.startsWith('http://') && !input.startsWith('https://')) {
                 input = 'https://' + input;
             }
-            let proxyUrl = "https://allorigins.win" + encodeURIComponent(input);
+            let proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(input);
             let newTab = window.open('about:blank', '_blank');
             if (!newTab) {
                 alert('弹窗被浏览器拦截了！请允许此网站的弹窗权限。');
