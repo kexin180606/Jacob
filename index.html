@@ -26,30 +26,20 @@
         function unblockSite() {
             let input = document.getElementById('target-url').value.trim();
             if (!input) return alert('请输入网址');
+            
             if (!input.startsWith('http://') && !input.startsWith('https://')) {
                 input = 'https://' + input;
             }
-            let proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(input);
+            
+            // 1. 先弹出一个完全没有历史痕迹的空白隐藏新标签页
             let newTab = window.open('about:blank', '_blank');
             if (!newTab) {
                 alert('弹窗被浏览器拦截了！请允许此网站的弹窗权限。');
                 return;
             }
-            let doc = newTab.document;
-            doc.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>New Tab</title>
-                    <style>
-                        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-                        iframe { width: 100%; height: 100%; border: none; }
-                    </style>
-                </head>
-                <body><iframe src="${proxyUrl}"></iframe></body>
-                </html>
-            `);
-            doc.close();
+            
+            // 2. 彻底粉碎黑屏机制：直接整页跳转到顶级独立无视封锁的代理网关上
+            newTab.location.href = "https://unblocker.cc" + input;
         }
     </script>
 </body>
