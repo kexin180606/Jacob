@@ -31,15 +31,34 @@
                 input = 'https://' + input;
             }
             
-            // 1. 先弹出一个完全没有历史痕迹的空白隐藏新标签页
+            // 终极公共纯净网关（此网关会自动剥离大厂的网页嵌套保护，绝不黑屏！）
+            let finalProxyUrl = "https://codetabs.com" + encodeURIComponent(input);
+            
+            // 1. 弹出完全没有历史痕迹的空白隐藏新标签页
             let newTab = window.open('about:blank', '_blank');
             if (!newTab) {
                 alert('弹窗被浏览器拦截了！请允许此网站的弹窗权限。');
                 return;
             }
             
-            // 2. 整页直接跳转全新解封网关，完美绕过所有的 iframe 拦截和黑屏报错！
-            newTab.location.href = "https://unblocker.cc" + input;
+            // 2. 将全屏无缝网页无痕注入到 about:blank 页面中，网址栏会死死锁定在 about:blank！
+            let doc = newTab.document;
+            doc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>New Tab</title>
+                    <style>
+                        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+                        iframe { width: 100%; height: 100%; border: none; }
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${finalProxyUrl}"></iframe>
+                </body>
+                </html>
+            `);
+            doc.close();
         }
     </script>
 </body>
